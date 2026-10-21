@@ -22,13 +22,13 @@
 
 ## 2. 技术选型
 
-| 项目 | 选择 | 理由 |
-|---|---|---|
-| 框架 | Astro（静态站点生成） | 内容驱动、Markdown 一等支持、教程完善、可按需渐进加交互 |
-| 样式 | 纯 CSS（全局样式 + 组件 scoped 样式 + CSS 变量） | 零基础应打 CSS 基本功；博客样式量纯 CSS 足够 |
-| 内容管理 | Astro Content Collections（Markdown + zod 校验 frontmatter） | 类似后端 DTO 校验，元信息错误在构建期暴露 |
-| 部署 | GitHub Pages + GitHub Actions | 免费零运维；产物为纯 HTML，日后迁移国内成本低（仅备案耗时） |
-| 评论（加分项） | giscus（基于 GitHub Discussions） | 零后端成本，接入简单 |
+| 项目      | 选择                                                       | 理由                               |
+| ------- | -------------------------------------------------------- | -------------------------------- |
+| 框架      | Astro（静态站点生成）                                            | 内容驱动、Markdown 一等支持、教程完善、可按需渐进加交互 |
+| 样式      | 纯 CSS（全局样式 + 组件 scoped 样式 + CSS 变量）                      | 零基础应打 CSS 基本功；博客样式量纯 CSS 足够      |
+| 内容管理    | Astro Content Collections（Markdown + zod 校验 frontmatter） | 类似后端 DTO 校验，元信息错误在构建期暴露          |
+| 部署      | GitHub Pages + GitHub Actions                            | 免费零运维；产物为纯 HTML，日后迁移国内成本低（仅备案耗时） |
+| 评论（加分项） | giscus（基于 GitHub Discussions）                            | 零后端成本，接入简单                       |
 
 数据流向：`Markdown 文件 → Astro 构建 → 静态 HTML → GitHub Pages`。
 
