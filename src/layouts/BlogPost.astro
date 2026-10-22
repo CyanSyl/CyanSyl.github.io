@@ -1,0 +1,34 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  date: Date;
+  tags: string[];
+}
+const { title, date, tags } = Astro.props;
+
+const formatted = date.toLocaleDateString('zh-CN', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+---
+<BaseLayout title={`${title} | 我的博客`}>
+    <article>
+        <h1>{title}</h1>
+        <p class="meta">
+            <time datetime={date.toISOString()}>{formatted}</time>
+            {tags.map((tag) => <a class="tag" href={`/tags/${tag}`}>{tag}</a>)}
+        </p>
+        <div class="content">
+            <slot />
+        </div>
+    </article>
+</BaseLayout>
+
+<style>
+    article { max-width: var(--max-width); margin: 0 auto; padding: 2rem 1rem; }
+    .meta { color: var(--color-muted); margin: 0.5rem 0 2rem; }
+    .tag { margin-left: 0.5rem; font-size: 0.9rem; }
+    .content :global(h2) { margin-top: 2rem; }
+    .content :global(p) { margin: 1rem 0; }
+</style>

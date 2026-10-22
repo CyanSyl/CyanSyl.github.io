@@ -190,6 +190,13 @@
   },
   "active": "4afe2e25b23a45ba",
   "lastOpenFiles": [
+    "src/pages/blogs/[...slug].astro",
+    "src/pages/blogs",
+    "src/pages/blog/[...slug].astro",
+    "src/pages/blog",
+    "src/layouts/BlogPost.astro",
+    "src/pages/[...slug].astro",
+    "src/layouts/BlogPosts.astro",
     "src/content/blog/test2.md",
     "src/content/blog/test1.md",
     "src/content/blog",
@@ -202,14 +209,8 @@
     "public/images/hero.png",
     "public/images",
     "public/imagines/hero.png",
-    "public/imagines",
     "public/favicon.svg",
-    "public/favicon.ico",
-    "public",
-    "dist/index.html",
     "dist/favicon.svg",
-    "dist/favicon.ico",
-    "dist",
     "docs/superpowers/specs/2026-10-19-personal-blog-design.md",
     "node_modules/cliui/node_modules/string-width/readme.md",
     "node_modules/cliui/README.md",
@@ -230,7 +231,6 @@
     "node_modules/yaml-language-server/CHANGELOG.md",
     "node_modules/yaml-language-server/CONTRIBUTING.md",
     "node_modules/@vscode/emmet-helper/node_modules/jsonc-parser/README.md",
-    "node_modules/@vscode/emmet-helper/node_modules/jsonc-parser/LICENSE.md",
-    "node_modules/@vscode/emmet-helper/node_modules/jsonc-parser/CHANGELOG.md"
+    "node_modules/@vscode/emmet-helper/node_modules/jsonc-parser/LICENSE.md"
   ]
 }
