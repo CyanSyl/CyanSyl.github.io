@@ -190,6 +190,11 @@
   },
   "active": "4afe2e25b23a45ba",
   "lastOpenFiles": [
+    "src/content/blog/test2.md",
+    "src/content/blog/test1.md",
+    "src/content/blog",
+    "src/content",
+    "src/content.config.ts",
     "docs/语法笔记.md",
     "public/images/hero2.png",
     "public/images/%E5%9B%BE%E7%94%9F%E5%9B%BE.png",
@@ -205,9 +210,6 @@
     "dist/favicon.svg",
     "dist/favicon.ico",
     "dist",
-    "src/layouts/BaseLayout.astro",
-    "src/layouts/BaseLayout",
-    "src/layouts/Baselayout",
     "docs/superpowers/specs/2026-10-19-personal-blog-design.md",
     "node_modules/cliui/node_modules/string-width/readme.md",
     "node_modules/cliui/README.md",
@@ -229,8 +231,6 @@
     "node_modules/yaml-language-server/CONTRIBUTING.md",
     "node_modules/@vscode/emmet-helper/node_modules/jsonc-parser/README.md",
     "node_modules/@vscode/emmet-helper/node_modules/jsonc-parser/LICENSE.md",
-    "node_modules/@vscode/emmet-helper/node_modules/jsonc-parser/CHANGELOG.md",
-    "node_modules/@vscode/l10n/README.md",
-    "node_modules/@vscode/emmet-helper/SECURITY.md"
+    "node_modules/@vscode/emmet-helper/node_modules/jsonc-parser/CHANGELOG.md"
   ]
 }
