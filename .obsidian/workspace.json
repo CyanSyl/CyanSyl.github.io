@@ -190,6 +190,7 @@
   },
   "active": "4afe2e25b23a45ba",
   "lastOpenFiles": [
+    "public/favicon.png",
     "docs/样式实施记录.md",
     "docs/风格设计.md",
     "dist/images/hero.png",
@@ -234,7 +235,6 @@
     "node_modules/yaml-language-server/node_modules/request-light/LICENSE.md",
     "node_modules/yaml-language-server/node_modules/request-light/CHANGELOG.md",
     "node_modules/yaml-language-server/README.md",
-    "node_modules/yaml-language-server/CHANGELOG.md",
-    "node_modules/yaml-language-server/CONTRIBUTING.md"
+    "node_modules/yaml-language-server/CHANGELOG.md"
   ]
 }
