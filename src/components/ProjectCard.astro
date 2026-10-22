@@ -8,16 +8,19 @@ interface Props {
 const { name, description, techStack, url } = Astro.props;
 ---
 
-<article class="card">
-    <a href={url} target="_blank" rel="noopener"><h3>{name}</h3></a>
+<a href={url} target="_blank" rel="noopener" class="card">
+    <h3>{name}</h3>
     <p class="desc">{description}</p>
     <ul class="stack">
         {techStack.map((tech) => <li>{tech}</li>)}
     </ul>
-</article>
+</a>
 
 <style>
     .card {
+        display: block;
+        text-decoration: none;
+        color: inherit;
         background: var(--color-bg-card);
         border: 1px solid var(--color-border);
         border-radius: 8px;
@@ -27,7 +30,9 @@ const { name, description, techStack, url } = Astro.props;
     .card:hover {
         transform: translateY(-2px);
         border-color: var(--color-accent);
+        text-decoration: none;
     }
+    .card:hover h3 { color: var(--color-accent); }
     .card h3 { display: inline; color: var(--color-text); }
     .desc { color: var(--color-muted); margin: 0.5rem 0; }
     .stack { display: flex; gap: 0.5rem; list-style: none; flex-wrap: wrap; }
