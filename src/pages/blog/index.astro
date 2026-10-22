@@ -61,16 +61,17 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 </style>
 
 <script>
-  const btns = document.querySelectorAll('.tag-btn');
-  const items = document.querySelectorAll('.post-item');
+  const btns = document.querySelectorAll<HTMLButtonElement>('.tag-btn');
+  const items = document.querySelectorAll<HTMLElement>('.post-item');
 
   btns.forEach((btn) => {
     btn.addEventListener('click', () => {
       btns.forEach((b) => b.classList.remove('active'));
       btn.classList.add('active');
       const tag = btn.dataset.tag;
+      if (!tag) return;
       items.forEach((item) => {
-        const show = tag === 'all' || item.dataset.tags.split(',').includes(tag);
+        const show = tag === 'all' || (item.dataset.tags ?? '').split(',').includes(tag);
         item.style.display = show ? '' : 'none';
       });
     });

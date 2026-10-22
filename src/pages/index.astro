@@ -154,7 +154,7 @@ const featuredProjects = projects.filter((p) => p.featured);
 </style>
 
 <script>
-  	const hero = document.querySelector('.hero');
+  	const hero = document.querySelector<HTMLElement>('.hero');
   	// 只在有鼠标的设备上启用（pointer: fine = 精确指针，触屏为 coarse）
   	// 用户系统设置了"减少动态效果"时尊重其偏好
   	const ok = window.matchMedia('(pointer: fine)').matches

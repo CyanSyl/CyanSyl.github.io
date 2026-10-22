@@ -1,0 +1,91 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const byYear = new Map<number, typeof posts>();
+for (const post of posts) {
+  const year = post.data.date.getFullYear();
+  if (!byYear.has(year)) byYear.set(year, []);
+  byYear.get(year)!.push(post);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+
+const formatDay = (date: Date) =>
+  `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+---
+<BaseLayout title="归档 | 我的博客">
+  <section class="archive">
+    <h1>归档</h1>
+    <p class="total">共 {posts.length} 篇文章</p>
+
+    {years.map((year) => (
+      <div class="year-group">
+        <h2 class="year">{year}</h2>
+        <ul class="timeline">
+          {byYear.get(year)!.map((post) => (
+            <li>
+              <a href={`/blog/${post.id}`} class="entry">
+                <time>{formatDay(post.data.date)}</time>
+                <span class="title">{post.data.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .archive { max-width: var(--max-width); margin: 0 auto; padding: 2rem 1rem; }
+  .total { color: var(--color-muted); margin: 0.5rem 0 2rem; }
+
+  .year-group { margin-bottom: 2.5rem; }
+  .year {
+    color: var(--color-accent);
+    font-size: 1.6rem;
+    margin: 0 0 1rem;
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 1.25rem;
+    border-left: 2px solid var(--color-border);
+  }
+  .timeline li { position: relative; }
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    left: calc(-1.25rem - 5px);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    opacity: 0.7;
+  }
+
+  .entry {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 0.5rem;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .entry:hover { background: var(--color-bg-card); text-decoration: none; }
+  .entry time {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+  .entry:hover .title { color: var(--color-accent); }
+</style>
