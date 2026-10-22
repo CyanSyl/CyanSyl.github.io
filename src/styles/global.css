@@ -30,3 +30,17 @@ a:hover { text-decoration: underline; }
   border-radius: 4px;
 }
 ::-webkit-scrollbar-track { background: transparent; }
+
+/* Pagefind 搜索组件配色（对接月夜深蓝主题） */
+pagefind-searchbox, pagefind-modal {
+  --pf-background: var(--color-bg-card);
+  --pf-text: var(--color-text);
+  --pf-text-secondary: var(--color-muted);
+  --pf-text-muted: var(--color-muted);
+  --pf-border: var(--color-border);
+  --pf-border-focus: var(--color-accent);
+  --pf-hover: var(--color-bg);
+  --pf-mark: var(--color-accent);
+  --pf-border-radius: 8px;
+  --pf-font: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
