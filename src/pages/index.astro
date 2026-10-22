@@ -51,13 +51,21 @@ const featuredProjects = projects.filter((p) => p.featured);
     	position: relative;
     	margin-top: -56px;
     	height: 100vh;
-    	background: url('/images/hero2.png') center / cover no-repeat;
+    	overflow: hidden;
     	display: flex;
     	flex-direction: column;
     	justify-content: center;
     	align-items: center;
     	color: #fff;
     	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  	}
+  	.hero::before {
+    	content: '';
+    	position: absolute;
+    	inset: -30px;
+    	background: url('/images/hero2.png') center / cover no-repeat;
+    	transform: translate(var(--px, 0px), var(--py, 0px));
+    	z-index: 0;
   	}
   	.hero h1 { font-size: 2.5rem; }
   	.hint { margin-top: 2rem; opacity: 0.85; }
@@ -68,8 +76,9 @@ const featuredProjects = projects.filter((p) => p.featured);
     	height: 30%;
     	background: linear-gradient(to bottom, transparent, var(--color-bg));
     	pointer-events: none;
+    	z-index: 1;
   	}
-  	.hero h1, .hero .hint { position: relative; z-index: 1; }
+  	.hero h1, .hero .hint { position: relative; z-index: 2; }
   	.recent, .featured {
     	max-width: var(--max-width);
     	margin: 0 auto;
@@ -83,3 +92,28 @@ const featuredProjects = projects.filter((p) => p.featured);
   	}
   	.more { margin: 1rem 0 3rem; }
 </style>
+
+<script>
+  	const hero = document.querySelector('.hero');
+  	// 只在有鼠标的设备上启用（pointer: fine = 精确指针，触屏为 coarse）
+  	if (hero && window.matchMedia('(pointer: fine)').matches) {
+    	const MAX = 20; // 最大偏移像素
+    	let targetX = 0, targetY = 0, curX = 0, curY = 0;
+
+    	window.addEventListener('mousemove', (e) => {
+      		// 鼠标位置归一化到 -1 ~ 1
+      		targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+      		targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+    	});
+
+    	const tick = () => {
+      		// 缓动：每帧向目标靠近 6%，形成平滑跟随
+      		curX += (targetX - curX) * 0.06;
+      		curY += (targetY - curY) * 0.06;
+      		hero.style.setProperty('--px', `${-curX * MAX}px`);
+      		hero.style.setProperty('--py', `${-curY * MAX}px`);
+      		requestAnimationFrame(tick);
+    	};
+    	tick();
+  	}
+</script>
