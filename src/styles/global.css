@@ -17,3 +17,10 @@ body {
 
 a { color: var(--color-accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { 
+  background: #9ca3af;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-track { background: transparent; } 

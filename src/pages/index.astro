@@ -2,5 +2,38 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="首页 | 我的博客">
-  <p>首页内容建设中。</p>
+  	<section class="hero">
+    	<h1>一句话标语写在这里</h1>
+    	<p class="hint">向下滚动 ↓</p>
+  	</section>
+
+  	<section class="recent">
+    	<h2>最新文章</h2>
+    	<p>（Task 10 接入真实文章列表）</p>
+  	</section>
+
+  	<section class="featured">
+    	<h2>精选项目</h2>
+    	<p>（Task 10 接入真实项目数据）</p>
+  	</section>
 </BaseLayout>
+
+<style>
+  	.hero {
+    	height: 100vh;
+    	background: url('/images/hero2.png') center / cover no-repeat;
+    	display: flex;
+    	flex-direction: column;
+    	justify-content: center;
+    	align-items: center;
+    	color: #fff;
+    	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  	}
+  	.hero h1 { font-size: 2.5rem; }
+  	.hint { margin-top: 2rem; opacity: 0.85; }
+  	.recent, .featured {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 3rem 1rem 0;
+  	}
+</style>
