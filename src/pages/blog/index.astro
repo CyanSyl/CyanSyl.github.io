@@ -11,6 +11,8 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
   <section class="list">
     <h1>全部文章</h1>
 
+    <pagefind-searchbox></pagefind-searchbox>
+
     <div class="filter-bar">
       <button class="tag-btn active" data-tag="all">全部</button>
       {tags.map((tag) => <button class="tag-btn" data-tag={tag}>{tag}</button>)}
@@ -33,6 +35,7 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 
 <style>
   .list { max-width: var(--max-width); margin: 0 auto; padding: 2rem 1rem; }
+  pagefind-searchbox { display: block; margin: 1rem 0 0.5rem; }
   .filter-bar {
     display: flex;
     gap: 0.5rem;
