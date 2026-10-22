@@ -1,26 +1,32 @@
 :root {
-    --color-bg: #ffffff;
-    --color-text: #1a1a1a;
-    --color-accent: #2563eb;
-    --color-muted: #6b7280;
-    --max-width: 720px;
+  --color-bg: #0d1117;
+  --color-bg-card: #161b26;
+  --color-border: #2a3345;
+  --color-text: #e6e9f0;
+  --color-muted: #8b94a8;
+  --color-accent: #7aa2f7;
+  --max-width: 720px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html { scroll-behavior: smooth; }
+
 body {
-    background: var(--color-bg);
-    color: var(--color-text);
-    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-    line-height: 1.7;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 17px;
+  line-height: 1.8;
 }
 
 a { color: var(--color-accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* 自定义滚动条 */
 ::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-thumb { 
-  background: #9ca3af;
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
   border-radius: 4px;
 }
-::-webkit-scrollbar-track { background: transparent; } 
+::-webkit-scrollbar-track { background: transparent; }
