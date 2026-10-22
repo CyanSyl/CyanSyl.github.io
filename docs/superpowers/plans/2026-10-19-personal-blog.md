@@ -362,10 +362,17 @@ git commit -m "feat: 首页 Hero 主题图与滚动区块占位"
 
 - [ ] **Step 1: 定义集合**
 
+先安装 zod（Astro 7 起 `z` 不再从 `astro:content` 导出，需直接从 zod 包导入）：
+
+```bash
+npm install zod
+```
+
 `src/content.config.ts`：
 
 ```ts
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'zod';
 import { glob } from 'astro/loaders';
 
 const blog = defineCollection({
