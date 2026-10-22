@@ -13,6 +13,8 @@ const featuredProjects = projects.filter((p) => p.featured);
 ---
 <BaseLayout title="首页 | 我的博客">
   	<section class="hero">
+    	<div class="stars stars-far"></div>
+    	<div class="stars stars-near"></div>
     	<h1>一句话标语写在这里</h1>
     	<p class="hint">向下滚动 ↓</p>
   	</section>
@@ -62,10 +64,36 @@ const featuredProjects = projects.filter((p) => p.featured);
   	.hero::before {
     	content: '';
     	position: absolute;
-    	inset: -30px;
+    	inset: 0;
     	background: url('/images/hero2.png') center / cover no-repeat;
-    	transform: translate(var(--px, 0px), var(--py, 0px));
+    	animation: kenburns 45s ease-in-out infinite alternate;
     	z-index: 0;
+  	}
+  	@keyframes kenburns {
+    	from { transform: scale(1); }
+    	to { transform: scale(1.1); }
+  	}
+  	.stars {
+    	position: absolute;
+    	inset: -40px;
+    	z-index: 1;
+    	pointer-events: none;
+  	}
+  	.stars::before {
+    	content: '';
+    	position: absolute;
+    	border-radius: 50%;
+    	background: #fff;
+  	}
+  	.stars-far { transform: translate(calc(var(--px, 0px) * 0.4), calc(var(--py, 0px) * 0.4)); }
+  	.stars-far::before {
+    	width: 1px; height: 1px; opacity: 0.5;
+    	box-shadow: 8vw 12vh #fff, 22vw 45vh #fff, 35vw 8vh #fff, 47vw 60vh #fff, 58vw 20vh #fff, 66vw 75vh #fff, 74vw 10vh #fff, 83vw 50vh #fff, 92vw 30vh #fff, 15vw 70vh #fff, 28vw 85vh #fff, 40vw 35vh #fff, 52vw 90vh #fff, 63vw 42vh #fff, 77vw 65vh #fff, 88vw 82vh #fff, 5vw 50vh #fff, 95vw 15vh #fff, 31vw 60vh #fff, 70vw 28vh #fff;
+  	}
+  	.stars-near { transform: translate(calc(var(--px, 0px) * 1.2), calc(var(--py, 0px) * 1.2)); }
+  	.stars-near::before {
+    	width: 2px; height: 2px; opacity: 0.85;
+    	box-shadow: 12vw 25vh #fff, 30vw 55vh #fff, 45vw 15vh #fff, 60vw 70vh #fff, 72vw 38vh #fff, 85vw 60vh #fff, 20vw 80vh #fff, 50vw 78vh #fff, 90vw 45vh #fff, 8vw 60vh #fff, 38vw 88vh #fff, 68vw 85vh #fff;
   	}
   	.hero h1 { font-size: 2.5rem; }
   	.hint { margin-top: 2rem; opacity: 0.85; }
@@ -76,9 +104,16 @@ const featuredProjects = projects.filter((p) => p.featured);
     	height: 30%;
     	background: linear-gradient(to bottom, transparent, var(--color-bg));
     	pointer-events: none;
-    	z-index: 1;
+    	z-index: 2;
   	}
-  	.hero h1, .hero .hint { position: relative; z-index: 2; }
+  	.hero h1, .hero .hint {
+    	position: relative;
+    	z-index: 3;
+    	transform: translate(calc(var(--px, 0px) * 0.7), calc(var(--py, 0px) * 0.7));
+  	}
+  	@media (prefers-reduced-motion: reduce) {
+    	.hero::before { animation: none; }
+  	}
   	.recent, .featured {
     	max-width: var(--max-width);
     	margin: 0 auto;
@@ -96,8 +131,11 @@ const featuredProjects = projects.filter((p) => p.featured);
 <script>
   	const hero = document.querySelector('.hero');
   	// 只在有鼠标的设备上启用（pointer: fine = 精确指针，触屏为 coarse）
-  	if (hero && window.matchMedia('(pointer: fine)').matches) {
-    	const MAX = 20; // 最大偏移像素
+  	// 用户系统设置了"减少动态效果"时尊重其偏好
+  	const ok = window.matchMedia('(pointer: fine)').matches
+    	&& !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  	if (hero && ok) {
+    	const MAX = 15; // 最大偏移像素
     	let targetX = 0, targetY = 0, curX = 0, curY = 0;
 
     	window.addEventListener('mousemove', (e) => {
