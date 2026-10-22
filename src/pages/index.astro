@@ -67,12 +67,7 @@ const featuredProjects = projects.filter((p) => p.featured);
     	position: absolute;
     	inset: 0;
     	background: url('/images/hero2.png') center / cover no-repeat;
-    	animation: kenburns 45s ease-in-out infinite alternate;
     	z-index: 0;
-  	}
-  	@keyframes kenburns {
-    	from { transform: scale(1.05) translateX(0.8%); }
-    	to { transform: scale(1.12) translateX(-0.8%); }
   	}
   	.fog {
     	position: absolute;
@@ -130,7 +125,7 @@ const featuredProjects = projects.filter((p) => p.featured);
     	transform: translate(calc(var(--px, 0px) * 0.7), calc(var(--py, 0px) * 0.7));
   	}
   	@media (prefers-reduced-motion: reduce) {
-    	.hero::before, .fog { animation: none; }
+    	.fog { animation: none; }
   	}
   	.recent, .featured {
     	max-width: var(--max-width);
