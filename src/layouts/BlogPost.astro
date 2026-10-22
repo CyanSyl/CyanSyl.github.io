@@ -27,8 +27,32 @@ const formatted = date.toLocaleDateString('zh-CN', {
 
 <style>
     article { max-width: var(--max-width); margin: 0 auto; padding: 2rem 1rem; }
+    h1 { font-size: 1.75rem; line-height: 1.4; }
     .meta { color: var(--color-muted); margin: 0.5rem 0 2rem; }
     .tag { margin-left: 0.5rem; font-size: 0.9rem; }
-    .content :global(h2) { margin-top: 2rem; }
+    .content :global(h2) { margin-top: 2.5rem; font-size: 1.4rem; }
+    .content :global(h3) { margin-top: 2rem; font-size: 1.15rem; }
     .content :global(p) { margin: 1rem 0; }
+    .content :global(ul), .content :global(ol) { margin: 1rem 0; padding-left: 1.5rem; }
+    .content :global(a) { text-decoration: underline; }
+    .content :global(code) {
+        background: var(--color-bg-card);
+        padding: 0.15em 0.4em;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+    .content :global(pre) {
+        background: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        padding: 1rem;
+        overflow-x: auto;
+    }
+    .content :global(pre code) { background: none; padding: 0; }
+    .content :global(blockquote) {
+        border-left: 3px solid var(--color-accent);
+        padding-left: 1rem;
+        color: var(--color-muted);
+        margin: 1rem 0;
+    }
 </style>
