@@ -11,7 +11,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     <h1>全部文章</h1>
     {posts.map((post) => (
       <PostCard
-        url={`/blogs/${post.id}`}
+        url={`/blog/${post.id}`}
         title={post.data.title}
         date={post.data.date}
         description={post.data.description}
