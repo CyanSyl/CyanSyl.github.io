@@ -1,5 +1,15 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { projects } from '../data/projects';
+
+const recentPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  	.sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  	.slice(0, 5);
+
+const featuredProjects = projects.filter((p) => p.featured);
 ---
 <BaseLayout title="首页 | 我的博客">
   	<section class="hero">
@@ -9,12 +19,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   	<section class="recent">
     	<h2>最新文章</h2>
-    	<p>（Task 10 接入真实文章列表）</p>
+    	{recentPosts.map((post) => (
+      		<PostCard
+        		url={`/blog/${post.id}`}
+        		title={post.data.title}
+        		date={post.data.date}
+        		description={post.data.description}
+      		/>
+    	))}
+		<p class="more"><a href="/blog">全部文章 →</a></p>
   	</section>
 
   	<section class="featured">
     	<h2>精选项目</h2>
-    	<p>（Task 10 接入真实项目数据）</p>
+    	<div class="grid">
+      		{featuredProjects.map((p) => (
+        	<ProjectCard
+          		name={p.name}
+          		description={p.description}
+          		techStack={p.techStack}
+          		url={p.url}
+        	/>
+      		))}
+    	</div>
+    	<p class="more"><a href="/projects">全部项目 →</a></p>
   	</section>
 </BaseLayout>
 
@@ -32,8 +60,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   	.hero h1 { font-size: 2.5rem; }
   	.hint { margin-top: 2rem; opacity: 0.85; }
   	.recent, .featured {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: 3rem 1rem 0;
+    	max-width: var(--max-width);
+    	margin: 0 auto;
+    	padding: 3rem 1rem 0;
   	}
+  	.grid {
+    	display: grid;
+    	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    	gap: 1rem;
+    	margin-top: 1rem;
+  	}
+  	.more { margin: 1rem 0 3rem; }
 </style>
