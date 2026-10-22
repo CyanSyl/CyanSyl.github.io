@@ -15,7 +15,18 @@ const formatted = date.toLocaleDateString('zh-CN');
 </article>
 
 <style>
-  .card { padding: 1rem 0; border-bottom: 1px solid #e5e7eb; }
+  .card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent);
+  }
   .card h3 { display: inline; color: var(--color-text); }
   .desc { color: var(--color-muted); margin: 0.25rem 0; }
   time { font-size: 0.85rem; color: var(--color-muted); }
