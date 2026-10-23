@@ -190,6 +190,7 @@
   },
   "active": "4afe2e25b23a45ba",
   "lastOpenFiles": [
+    "docs/部署指南.md",
     "src/components/Starfield.astro",
     "dist/pagefind/pagefind.zh-cn_7893bc8c6c61e.pf_meta",
     "dist/pagefind/index/zh-cn_eaa0439.pf_index",
@@ -201,7 +202,6 @@
     "src/content/blog/demo-features.md",
     "dist/pagefind/pagefind.zh-cn_fac82b5366095.pf_meta",
     "dist/pagefind/index/zh-cn_1ca1cce.pf_index",
-    "dist/pagefind/index/zh-cn_94f0da7.pf_index",
     "src/content/blog/verify-temp.md",
     "dist/images/hero2.png",
     "dist/images/hero.png",
