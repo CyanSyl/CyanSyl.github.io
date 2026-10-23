@@ -190,18 +190,19 @@
   },
   "active": "4afe2e25b23a45ba",
   "lastOpenFiles": [
+    "dist/pagefind/pagefind.zh-cn_7893bc8c6c61e.pf_meta",
+    "dist/pagefind/index/zh-cn_eaa0439.pf_index",
+    "dist/pagefind/fragment/zh-cn_bef37f9.pf_fragment",
+    "dist/tags/演示/index.html",
+    "dist/tags/演示",
+    "dist/blog/demo-features/index.html",
+    "dist/blog/demo-features",
+    "src/content/blog/demo-features.md",
+    "dist/pagefind/pagefind.zh-cn_fac82b5366095.pf_meta",
+    "dist/pagefind/index/zh-cn_1ca1cce.pf_index",
     "dist/pagefind/index/zh-cn_94f0da7.pf_index",
     "dist/pagefind/fragment/zh-cn_76353fc.pf_fragment",
-    "dist/pagefind/pagefind.zh-cn_cae4ef9bef3e5.pf_meta",
-    "dist/tags/测试/index.html",
-    "dist/tags/测试",
-    "dist/blog/verify-temp/index.html",
-    "dist/blog/verify-temp",
     "src/content/blog/verify-temp.md",
-    "dist/archive/index.html",
-    "dist/archive",
-    "src/pages/archive.astro",
-    "dist/pagefind/pagefind.js",
     "dist/images/hero2.png",
     "dist/images/hero.png",
     "dist/images/hero-poster.jpg",
@@ -234,7 +235,6 @@
     "node_modules/vscode-css-languageservice/LICENSE.md",
     "node_modules/vscode-css-languageservice/CHANGELOG.md",
     "node_modules/yaml-language-server/node_modules/yaml/README.md",
-    "node_modules/yaml-language-server/node_modules/request-light/README.md",
-    "node_modules/yaml-language-server/node_modules/request-light/LICENSE.md"
+    "node_modules/yaml-language-server/node_modules/request-light/README.md"
   ]
 }

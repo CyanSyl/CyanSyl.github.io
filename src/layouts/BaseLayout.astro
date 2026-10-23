@@ -27,5 +27,34 @@ const { title } = Astro.props;
 </html>
 
 <style>
-    main { padding-top: 56px; }
+    main { padding-top: 56px; animation: page-in 0.4s ease-out; }
+    @keyframes page-in {
+        from { opacity: 0; transform: translateY(8px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        main { animation: none; }
+    }
 </style>
+
+<script>
+    // 滚动浮现：卡片、归档行进入视口时淡入上移
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduceMotion) {
+        const els = document.querySelectorAll<HTMLElement>('.card, .entry');
+        els.forEach((el, i) => {
+            el.classList.add('reveal');
+            el.style.transitionDelay = `${(i % 5) * 60}ms`;
+        });
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                const el = entry.target as HTMLElement;
+                el.classList.add('visible');
+                io.unobserve(el);
+                // 浮现结束后清掉延迟，避免影响 hover 过渡
+                setTimeout(() => { el.style.transitionDelay = '0ms'; }, 600);
+            });
+        }, { rootMargin: '0px 0px -8% 0px' });
+        els.forEach((el) => io.observe(el));
+    }
+</script>
