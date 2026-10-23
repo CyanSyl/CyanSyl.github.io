@@ -15,7 +15,7 @@
 </style>
 
 <script>
-    // 内页背景：渐变夜空 + 月亮 + 微闪星空 + 偶发流星
+    // 内页背景：渐变夜空 + 微闪星空 + 偶发流星
     // 想调节强度改下面三个常量即可
     const STAR_COUNT = 120;      // 星星数量
     const METEOR_MIN_GAP = 1200; // 流星最小间隔（毫秒）
@@ -60,32 +60,9 @@
             ctx.globalAlpha = 1;
         };
 
-        // 右上角的月亮：光晕 + 月盘（位置要避开中栏面板，否则会被毛玻璃盖住）
-        const drawMoon = () => {
-            const mx = w * 0.93, my = h * 0.11, mr = 24 * dpr;
-            const glow = ctx.createRadialGradient(mx, my, mr * 0.5, mx, my, mr * 4);
-            glow.addColorStop(0, 'rgba(240, 230, 200, 0.18)');
-            glow.addColorStop(1, 'rgba(240, 230, 200, 0)');
-            ctx.fillStyle = glow;
-            ctx.beginPath();
-            ctx.arc(mx, my, mr * 4, 0, Math.PI * 2);
-            ctx.fill();
-            // 月盘：左上稍亮的径向渐变，模拟明暗面
-            const disc = ctx.createRadialGradient(
-                mx - mr * 0.3, my - mr * 0.3, mr * 0.1, mx, my, mr
-            );
-            disc.addColorStop(0, '#f7f0dd');
-            disc.addColorStop(1, '#d8cdb2');
-            ctx.fillStyle = disc;
-            ctx.beginPath();
-            ctx.arc(mx, my, mr, 0, Math.PI * 2);
-            ctx.fill();
-        };
-
         if (reduceMotion) {
-            // 用户系统开了"减少动态效果"：只画一帧静态夜空，没有闪烁和流星
+            // 用户系统开了"减少动态效果"：只画一帧静态星空，没有闪烁和流星
             drawStars(0);
-            drawMoon();
         } else {
             interface Meteor {
                 x: number; y: number;
@@ -102,18 +79,14 @@
                 last = now;
                 ctx.clearRect(0, 0, w, h);
                 drawStars(now / 1000);
-                drawMoon();
 
                 if (now >= nextSpawn) {
-                    // 方向随机：一半向左下（135°~160°），一半向右下（20°~45°）
-                    const toLeft = Math.random() < 0.5;
-                    const angle = toLeft
-                        ? Math.PI * (0.72 + Math.random() * 0.12)
-                        : Math.PI * (0.16 + Math.random() * 0.12);
+                    // 方向统一向左下（135°~160°），从右侧和上方入场
+                    const angle = Math.PI * (0.72 + Math.random() * 0.12);
                     const speed = (500 + Math.random() * 400) * dpr;
                     meteors.push({
-                        x: w * (0.05 + Math.random() * 0.9),
-                        y: h * Math.random() * 0.4,
+                        x: w * (0.35 + Math.random() * 0.7),
+                        y: h * (Math.random() * 0.35 - 0.05),
                         vx: Math.cos(angle) * speed,
                         vy: Math.sin(angle) * speed,
                         born: now,
