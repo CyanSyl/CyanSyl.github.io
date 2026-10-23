@@ -6,13 +6,18 @@
         inset: 0;
         z-index: 0;
         pointer-events: none;
+        /* 夜空底色：天顶近黑 → 地平线泛蓝紫，叠加两片星云雾 */
+        background:
+            radial-gradient(ellipse 60% 40% at 70% 18%, rgba(90, 110, 180, 0.13), transparent 70%),
+            radial-gradient(ellipse 50% 35% at 22% 68%, rgba(130, 90, 160, 0.09), transparent 70%),
+            linear-gradient(to bottom, #04060e 0%, #0a0f22 45%, #131a36 100%);
     }
 </style>
 
 <script>
-    // 内页背景：微闪星空 + 偶发流星
+    // 内页背景：渐变夜空 + 月亮 + 微闪星空 + 偶发流星
     // 想调节强度改下面三个常量即可
-    const STAR_COUNT = 70;      // 星星数量
+    const STAR_COUNT = 120;      // 星星数量
     const METEOR_MIN_GAP = 2500; // 流星最小间隔（毫秒）
     const METEOR_MAX_GAP = 6500; // 流星最大间隔（毫秒）
 
@@ -33,18 +38,21 @@
         const stars = Array.from({ length: STAR_COUNT }, () => ({
             x: Math.random(),
             y: Math.random(),
-            r: 0.4 + Math.random() * 0.9,      // 半径（CSS 像素）
-            base: 0.12 + Math.random() * 0.25,  // 基础亮度
-            amp: 0.1 + Math.random() * 0.2,     // 明灭幅度
-            speed: 0.3 + Math.random() * 0.8,   // 明灭速度
-            phase: Math.random() * Math.PI * 2, // 初始相位（错开闪烁节奏）
+            r: 0.4 + Math.random() * 1.3,       // 半径（CSS 像素），大小拉开差距
+            base: 0.15 + Math.random() * 0.3,    // 基础亮度
+            amp: 0.1 + Math.random() * 0.2,      // 明灭幅度
+            speed: 0.3 + Math.random() * 0.8,    // 明灭速度
+            phase: Math.random() * Math.PI * 2,  // 初始相位（错开闪烁节奏）
+            // 少量暖色星，其余冷白/淡蓝
+            color: Math.random() < 0.12 ? '#ffe9c8'
+                : Math.random() < 0.5 ? '#cdd6f4' : '#ffffff',
         }));
 
         const drawStars = (t: number) => {
             for (const s of stars) {
                 const alpha = Math.max(s.base + Math.sin(t * s.speed + s.phase) * s.amp, 0);
                 ctx.globalAlpha = alpha;
-                ctx.fillStyle = '#cdd6f4';
+                ctx.fillStyle = s.color;
                 ctx.beginPath();
                 ctx.arc(s.x * w, s.y * h, s.r * dpr, 0, Math.PI * 2);
                 ctx.fill();
@@ -52,9 +60,32 @@
             ctx.globalAlpha = 1;
         };
 
+        // 右上角的月亮：光晕 + 月盘
+        const drawMoon = () => {
+            const mx = w * 0.85, my = h * 0.14, mr = 26 * dpr;
+            const glow = ctx.createRadialGradient(mx, my, mr * 0.5, mx, my, mr * 4);
+            glow.addColorStop(0, 'rgba(240, 230, 200, 0.14)');
+            glow.addColorStop(1, 'rgba(240, 230, 200, 0)');
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(mx, my, mr * 4, 0, Math.PI * 2);
+            ctx.fill();
+            // 月盘：左上稍亮的径向渐变，模拟明暗面
+            const disc = ctx.createRadialGradient(
+                mx - mr * 0.3, my - mr * 0.3, mr * 0.1, mx, my, mr
+            );
+            disc.addColorStop(0, '#f7f0dd');
+            disc.addColorStop(1, '#d8cdb2');
+            ctx.fillStyle = disc;
+            ctx.beginPath();
+            ctx.arc(mx, my, mr, 0, Math.PI * 2);
+            ctx.fill();
+        };
+
         if (reduceMotion) {
-            // 用户系统开了"减少动态效果"：只画一帧静态星空，没有闪烁和流星
+            // 用户系统开了"减少动态效果"：只画一帧静态夜空，没有闪烁和流星
             drawStars(0);
+            drawMoon();
         } else {
             interface Meteor {
                 x: number; y: number;
@@ -71,6 +102,7 @@
                 last = now;
                 ctx.clearRect(0, 0, w, h);
                 drawStars(now / 1000);
+                drawMoon();
 
                 if (now >= nextSpawn) {
                     // 从上方区域出发，向左下方（135°~160°）坠落
