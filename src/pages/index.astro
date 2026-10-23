@@ -79,8 +79,6 @@ const featuredProjects = projects.filter((p) => p.featured);
     	height: 100%;
     	object-fit: cover;
     	z-index: 1;
-    	/* 稍微放大，给视差平移留出边缘余量；系数 0.3 = 最远的背景层 */
-    	transform: scale(1.06) translate(calc(var(--px, 0px) * 0.3), calc(var(--py, 0px) * 0.3));
   	}
   	.fog {
     	position: absolute;
