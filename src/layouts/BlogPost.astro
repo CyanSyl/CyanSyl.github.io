@@ -1,35 +1,134 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import type { MarkdownHeading } from 'astro';
+import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  title: string;
-  date: Date;
-  tags: string[];
+    title: string;
+    date: Date;
+    tags: string[];
+    headings: MarkdownHeading[];
+    prev: CollectionEntry<'blog'> | null;
+    next: CollectionEntry<'blog'> | null;
+    wordCount: number;
+    readingTime: number;
 }
-const { title, date, tags } = Astro.props;
+const { title, date, tags, headings, prev, next, wordCount, readingTime } = Astro.props;
 
 const formatted = date.toLocaleDateString('zh-CN', {
-  year: 'numeric', month: 'long', day: 'numeric',
+    year: 'numeric', month: 'long', day: 'numeric',
 });
+// 目录只收 h2/h3，h1 是文章标题本身
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 <BaseLayout title={`${title} | 我的博客`}>
-    <article>
-        <h1>{title}</h1>
-        <p class="meta">
-            <time datetime={date.toISOString()}>{formatted}</time>
-            {tags.map((tag) => <a class="tag" href={`/tags/${tag}`}>{tag}</a>)}
-        </p>
-        <div class="content" data-pagefind-body>
-            <slot />
-        </div>
-    </article>
+    <div class:list={['post-layout', { 'no-toc': toc.length === 0 }]}>
+        <article>
+            <h1>{title}</h1>
+            <p class="meta">
+                <time datetime={date.toISOString()}>{formatted}</time>
+                <span class="sep">·</span>
+                <span>全文 {wordCount} 字</span>
+                <span class="sep">·</span>
+                <span>阅读约 {readingTime} 分钟</span>
+                {tags.map((tag) => <a class="tag" href={`/tags/${tag}`}>{tag}</a>)}
+            </p>
+            <div class="content" data-pagefind-body>
+                <slot />
+            </div>
+            <nav class="pager">
+                {prev
+                    ? <a class="pager-link" href={`/blog/${prev.id}`}>
+                        <span class="pager-label">« 上一篇（更新）</span>
+                        <span class="pager-title">{prev.data.title}</span>
+                      </a>
+                    : <span />}
+                {next
+                    ? <a class="pager-link next" href={`/blog/${next.id}`}>
+                        <span class="pager-label">下一篇（更早） »</span>
+                        <span class="pager-title">{next.data.title}</span>
+                      </a>
+                    : <span />}
+            </nav>
+        </article>
+        {toc.length > 0 && (
+            <aside class="toc">
+                <p class="toc-title">目录</p>
+                <ul>
+                    {toc.map((h) => (
+                        <li class={h.depth === 3 ? 'depth-3' : ''}>
+                            <a href={`#${h.slug}`} data-slug={h.slug}>{h.text}</a>
+                        </li>
+                    ))}
+                </ul>
+            </aside>
+        )}
+    </div>
 </BaseLayout>
 
 <style>
-    article { max-width: var(--max-width); margin: 0 auto; padding: 2rem 1rem; }
+    .post-layout {
+        max-width: calc(var(--max-width) + 260px);
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 220px;
+        gap: 2.5rem;
+    }
+    .post-layout.no-toc {
+        grid-template-columns: 1fr;
+        max-width: var(--max-width);
+    }
+    @media (max-width: 1023px) {
+        .post-layout { grid-template-columns: 1fr; max-width: var(--max-width); }
+        .toc { display: none; }
+    }
+
     h1 { font-size: 1.75rem; line-height: 1.4; }
-    .meta { color: var(--color-muted); margin: 0.5rem 0 2rem; }
+    .meta { color: var(--color-muted); margin: 0.5rem 0 2rem; font-size: 0.9rem; }
+    .sep { margin: 0 0.4rem; }
     .tag { margin-left: 0.5rem; font-size: 0.9rem; }
+
+    /* 目录 */
+    .toc { align-self: start; position: sticky; top: 5rem; font-size: 0.9rem; }
+    .toc-title {
+        color: var(--color-muted);
+        margin: 0 0 0.5rem;
+        padding-left: 0.75rem;
+    }
+    .toc ul { list-style: none; margin: 0; padding: 0; }
+    .toc a {
+        display: block;
+        padding: 0.3rem 0.75rem;
+        border-left: 2px solid var(--color-border);
+        color: var(--color-muted);
+    }
+    .toc a:hover { color: var(--color-text); text-decoration: none; }
+    .toc a.active { color: var(--color-accent); border-left-color: var(--color-accent); }
+    .toc li.depth-3 a { padding-left: 1.75rem; font-size: 0.85rem; }
+
+    /* 上一篇 / 下一篇 */
+    .pager {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--color-border);
+    }
+    .pager-link {
+        max-width: 48%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        background: var(--color-bg-card);
+        color: var(--color-text);
+    }
+    .pager-link:hover { border-color: var(--color-accent); text-decoration: none; }
+    .pager-link.next { margin-left: auto; text-align: right; }
+    .pager-label { display: block; font-size: 0.8rem; color: var(--color-muted); }
+    .pager-title { display: block; margin-top: 0.25rem; }
+
     .content :global(h2) { margin-top: 2.5rem; font-size: 1.4rem; }
     .content :global(h3) { margin-top: 2rem; font-size: 1.15rem; }
     .content :global(p) { margin: 1rem 0; }
@@ -42,6 +141,7 @@ const formatted = date.toLocaleDateString('zh-CN', {
         font-size: 0.9em;
     }
     .content :global(pre) {
+        position: relative;
         background: var(--color-bg-card);
         border: 1px solid var(--color-border);
         border-radius: 8px;
@@ -49,6 +149,23 @@ const formatted = date.toLocaleDateString('zh-CN', {
         overflow-x: auto;
     }
     .content :global(pre code) { background: none; padding: 0; }
+    .content :global(.copy-btn) {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        font-size: 0.75rem;
+        font-family: inherit;
+        color: var(--color-muted);
+        background: rgba(13, 17, 23, 0.7);
+        border: 1px solid var(--color-border);
+        border-radius: 6px;
+        padding: 0.2rem 0.6rem;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .content :global(pre:hover .copy-btn) { opacity: 1; }
+    .content :global(.copy-btn:hover) { color: var(--color-text); border-color: var(--color-accent); }
     .content :global(blockquote) {
         border-left: 3px solid var(--color-accent);
         padding-left: 1rem;
@@ -56,3 +173,37 @@ const formatted = date.toLocaleDateString('zh-CN', {
         margin: 1rem 0;
     }
 </style>
+
+<script>
+    // 目录高亮（scroll-spy）：正文标题进入视口上部时，点亮对应目录项
+    const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc a');
+    const contentHeadings = document.querySelectorAll('.content h2, .content h3');
+    if (tocLinks.length && contentHeadings.length) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    tocLinks.forEach((link) =>
+                        link.classList.toggle('active', link.dataset.slug === entry.target.id)
+                    );
+                }
+            });
+        }, { rootMargin: '0px 0px -70% 0px' });
+        contentHeadings.forEach((h) => observer.observe(h));
+    }
+</script>
+
+<script>
+    // 代码块复制按钮：给每个 pre 动态加一个按钮，点击复制其中的代码
+    document.querySelectorAll('.content pre').forEach((pre) => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = '复制';
+        btn.addEventListener('click', async () => {
+            const code = pre.querySelector('code')?.textContent ?? '';
+            await navigator.clipboard.writeText(code);
+            btn.textContent = '已复制';
+            setTimeout(() => { btn.textContent = '复制'; }, 1500);
+        });
+        pre.appendChild(btn);
+    });
+</script>
