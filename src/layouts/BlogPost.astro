@@ -21,7 +21,7 @@ const formatted = date.toLocaleDateString('zh-CN', {
 // 目录只收 h2/h3，h1 是文章标题本身
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
-<BaseLayout title={`${title} | 我的博客`}>
+<BaseLayout title={`${title} | 我的博客`} wide={toc.length > 0}>
     <div class:list={['post-layout', { 'no-toc': toc.length === 0 }]}>
         <article>
             <h1>{title}</h1>

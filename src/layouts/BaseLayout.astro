@@ -4,8 +4,8 @@ import Footer from '../components/Footer.astro';
 import Starfield from '../components/Starfield.astro';
 import '../styles/global.css';
 
-interface Props { title: string }
-const { title } = Astro.props;
+interface Props { title: string; wide?: boolean }
+const { title, wide = false } = Astro.props;
 // 首页 Hero 已有视频+星星+雾，星空背景只给内页
 const isHome = Astro.url.pathname === '/';
 ---
@@ -24,7 +24,11 @@ const isHome = Astro.url.pathname === '/';
         {!isHome && <Starfield />}
         <Header />
         <main>
-            <slot />
+            {isHome ? <slot /> : (
+                <div class:list={['panel', { wide }]}>
+                    <slot />
+                </div>
+            )}
         </main>
         <Footer />
     </body>
@@ -36,6 +40,24 @@ const isHome = Astro.url.pathname === '/';
         z-index: 1;
         padding-top: 56px;
         animation: page-in 0.4s ease-out;
+    }
+    /* 内页中栏毛玻璃板：星空（底层）→ 板（柔化透光）→ 内容 */
+    .panel {
+        width: calc(100% - 2rem);
+        max-width: calc(var(--max-width) + 2rem);
+        margin: 1.5rem auto;
+        padding: 0.5rem 1rem;
+        background: rgba(13, 17, 23, 0.75);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    /* 文章页带 TOC 时中栏更宽（720 正文 + 260 目录） */
+    .panel.wide { max-width: calc(var(--max-width) + 260px + 2rem); }
+    @media (max-width: 639px) {
+        .panel { padding: 0.5rem 0; }
     }
     @keyframes page-in {
         from { opacity: 0; transform: translateY(8px); }
