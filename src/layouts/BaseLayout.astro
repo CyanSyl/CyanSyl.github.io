@@ -32,7 +32,7 @@ const needsSearch = Astro.url.pathname.replace(/\/+$/, '') === '/blog';
         <title>{title}</title>
     </head>
     <body>
-        <Starfield />
+        {!isHome && <Starfield />}
         <Header />
         <main>
             {isHome ? <slot /> : (
