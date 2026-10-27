@@ -21,6 +21,7 @@ const notes = defineCollection({
         date: z.coerce.date(),
         type: z.enum(['note', 'dig', 'fill']).default('note'),
         link: z.string().optional(),
+        tags: z.array(z.string()).default([]),
     }),
 });
 
