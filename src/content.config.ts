@@ -14,10 +14,13 @@ const blog = defineCollection({
 });
 
 // 想法流：不要标题，一段话 + 日期即可
+// type: dig = 挖坑（待写选题），fill = 填坑（写完了，link 指向文章），不写 = 普通想法
 const notes = defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/notes' }),
     schema: z.object({
         date: z.coerce.date(),
+        type: z.enum(['note', 'dig', 'fill']).default('note'),
+        link: z.string().optional(),
     }),
 });
 

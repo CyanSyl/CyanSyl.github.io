@@ -28,7 +28,12 @@ const formatDay = (date: Date) =>
       {rendered.map(({ note, Content }) => (
         <li class="entry">
           <time datetime={note.data.date.toISOString()}>{formatDay(note.data.date)}</time>
+          {note.data.type === 'dig' && <span class="badge dig">挖坑</span>}
+          {note.data.type === 'fill' && <span class="badge fill">填坑</span>}
           <div class="body"><Content /></div>
+          {note.data.type === 'fill' && note.data.link && (
+            <a class="fill-link" href={note.data.link}>→ 看文章</a>
+          )}
         </li>
       ))}
     </ul>
@@ -59,6 +64,17 @@ const formatDay = (date: Date) =>
     opacity: 0.7;
   }
   time { color: var(--color-muted); font-size: 0.85rem; }
+  .badge {
+    font-size: 0.72rem;
+    border-radius: 999px;
+    padding: 0.05rem 0.55rem;
+    margin-left: 0.5rem;
+    border: 1px solid;
+    vertical-align: 0.1em;
+  }
+  .badge.dig { color: var(--color-accent); border-color: var(--color-accent); }
+  .badge.fill { color: #8fce9d; border-color: #8fce9d; }
+  .fill-link { font-size: 0.85rem; }
   .body { margin-top: 0.25rem; }
   .body :global(p) { margin: 0.3rem 0; }
 </style>
