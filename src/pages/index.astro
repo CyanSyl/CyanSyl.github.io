@@ -158,9 +158,10 @@ const featuredProjects = projects.filter((p) => p.featured);
     	margin-top: 1rem;
   	}
   	.more { margin: 1rem 0 3rem; }
-  	/* 极窄屏导航折成两行时 header 变高，Hero 上移量同步调整 */
+  	/* 极窄屏导航折成两行时 header 变高，Hero 上移量同步调整；标语缩小避免孤字换行 */
   	@media (max-width: 360px) {
     	.hero { margin-top: -96px; }
+    	.hero h1 { font-size: 2rem; }
   	}
 </style>
 
