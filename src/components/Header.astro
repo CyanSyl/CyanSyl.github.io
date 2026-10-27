@@ -2,17 +2,18 @@
 const pathname = Astro.url.pathname;
 const isActive = (href: string) =>
   href === '/' ? pathname === '/' : pathname.startsWith(href);
+const current = (href: string) => (isActive(href) ? 'page' : undefined);
 ---
 <header>
   <nav>
     <a href="/" class="logo">弈川的博客</a>
     <ul>
-      <li><a href="/" class={isActive('/') ? 'active' : ''}>首页</a></li>
-      <li><a href="/blog" class={isActive('/blog') ? 'active' : ''}>文章</a></li>
-      <li><a href="/projects" class={isActive('/projects') ? 'active' : ''}>项目</a></li>
-      <li><a href="/archive" class={isActive('/archive') ? 'active' : ''}>归档</a></li>
-      <li><a href="/notes" class={isActive('/notes') ? 'active' : ''}>想法</a></li>
-      <li><a href="/about" class={isActive('/about') ? 'active' : ''}>关于我</a></li>
+      <li><a href="/" class={isActive('/') ? 'active' : ''} aria-current={current('/')}>首页</a></li>
+      <li><a href="/blog" class={isActive('/blog') ? 'active' : ''} aria-current={current('/blog')}>文章</a></li>
+      <li><a href="/projects" class={isActive('/projects') ? 'active' : ''} aria-current={current('/projects')}>项目</a></li>
+      <li><a href="/archive" class={isActive('/archive') ? 'active' : ''} aria-current={current('/archive')}>归档</a></li>
+      <li><a href="/notes" class={isActive('/notes') ? 'active' : ''} aria-current={current('/notes')}>想法</a></li>
+      <li><a href="/about" class={isActive('/about') ? 'active' : ''} aria-current={current('/about')}>关于我</a></li>
     </ul>
   </nav>
 </header>
@@ -49,5 +50,10 @@ const isActive = (href: string) =>
     .logo { font-size: 1rem; }
     ul { gap: 0.6rem; }
     ul a { font-size: 0.85rem; }
+  }
+  /* 极窄屏：导航折成两行，logo 一行、链接一行均分 */
+  @media (max-width: 360px) {
+    nav { flex-wrap: wrap; }
+    ul { width: 100%; justify-content: space-between; gap: 0.4rem; margin-top: 0.4rem; }
   }
 </style>

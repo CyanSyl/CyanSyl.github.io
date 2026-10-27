@@ -38,6 +38,7 @@ const readingTime = Math.max(1, Math.round(wordCount / 400));
   next={next}
   wordCount={wordCount}
   readingTime={readingTime}
+  description={post.data.description || undefined}
 >
   <Content />
 </BlogPost>

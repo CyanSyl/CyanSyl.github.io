@@ -12,8 +12,9 @@ interface Props {
     next: CollectionEntry<'blog'> | null;
     wordCount: number;
     readingTime: number;
+    description?: string;
 }
-const { title, date, tags, headings, prev, next, wordCount, readingTime } = Astro.props;
+const { title, date, tags, headings, prev, next, wordCount, readingTime, description } = Astro.props;
 
 const formatted = date.toLocaleDateString('zh-CN', {
     year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
@@ -21,9 +22,9 @@ const formatted = date.toLocaleDateString('zh-CN', {
 // 目录只收 h2/h3，h1 是文章标题本身
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
-<BaseLayout title={`${title} | 弈川`} wide={toc.length > 0}>
+<BaseLayout title={`${title} | 弈川`} description={description} wide={toc.length > 0}>
     <div class:list={['post-layout', { 'no-toc': toc.length === 0 }]}>
-        <article>
+        <article data-pagefind-body>
             <h1>{title}</h1>
             <p class="meta">
                 <time datetime={date.toISOString()}>{formatted}</time>
@@ -33,10 +34,10 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
                 <span>阅读约 {readingTime} 分钟</span>
                 {tags.map((tag) => <a class="tag" href={`/tags/${tag}`}>{tag}</a>)}
             </p>
-            <div class="content" data-pagefind-body>
+            <div class="content">
                 <slot />
             </div>
-            <nav class="pager">
+            <nav class="pager" data-pagefind-ignore>
                 {prev
                     ? <a class="pager-link" href={`/blog/${prev.id}`}>
                         <span class="pager-label">« 上一篇（更新）</span>
@@ -165,6 +166,8 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
         transition: opacity 0.2s, color 0.2s, border-color 0.2s;
     }
     .content :global(pre:hover .copy-btn) { opacity: 1; }
+    /* 键盘 Tab 聚焦代码块内时按钮可见 */
+    .content :global(pre:focus-within .copy-btn) { opacity: 1; }
     /* 触屏设备没有 hover，复制按钮常显 */
     @media (hover: none) {
         .content :global(.copy-btn) { opacity: 1; }
@@ -204,8 +207,13 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
         btn.textContent = '复制';
         btn.addEventListener('click', async () => {
             const code = pre.querySelector('code')?.textContent ?? '';
-            await navigator.clipboard.writeText(code);
-            btn.textContent = '已复制';
+            try {
+                await navigator.clipboard.writeText(code);
+                btn.textContent = '已复制';
+            } catch {
+                // 剪贴板不可用（非 HTTPS、权限被拒等）时给出反馈
+                btn.textContent = '复制失败';
+            }
             setTimeout(() => { btn.textContent = '复制'; }, 1500);
         });
         pre.appendChild(btn);

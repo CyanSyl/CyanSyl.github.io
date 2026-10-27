@@ -5,18 +5,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
+// 固定 UTC 取日期部件，避免构建机器时区影响归档分组
+const dateParts = (date: Date) =>
+  Object.fromEntries(
+    new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit',
+    }).formatToParts(date).map((p) => [p.type, p.value])
+  );
+
 const byYear = new Map<number, typeof posts>();
 for (const post of posts) {
-  const year = post.data.date.getFullYear();
+  const year = Number(dateParts(post.data.date).year);
   if (!byYear.has(year)) byYear.set(year, []);
   byYear.get(year)!.push(post);
 }
 const years = [...byYear.keys()].sort((a, b) => b - a);
 
-const formatDay = (date: Date) =>
-  `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+const formatDay = (date: Date) => {
+  const p = dateParts(date);
+  return `${p.month}-${p.day}`;
+};
 ---
-<BaseLayout title="归档 | 弈川">
+<BaseLayout title="归档 | 弈川" description="文章归档">
   <section class="archive">
     <h1>归档</h1>
     <p class="total">共 {posts.length} 篇文章</p>

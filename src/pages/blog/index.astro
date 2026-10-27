@@ -7,15 +7,15 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 ---
-<BaseLayout title="文章 | 弈川">
+<BaseLayout title="文章 | 弈川" description="全部文章列表">
   <section class="list">
     <h1>全部文章</h1>
 
     <pagefind-searchbox></pagefind-searchbox>
 
     <div class="filter-bar">
-      <button class="tag-btn active" data-tag="all">全部</button>
-      {tags.map((tag) => <button class="tag-btn" data-tag={tag}>{tag}</button>)}
+      <button class="tag-btn active" data-tag="all" aria-pressed="true">全部</button>
+      {tags.map((tag) => <button class="tag-btn" data-tag={tag} aria-pressed="false">{tag}</button>)}
     </div>
 
     <div class="posts">
@@ -66,8 +66,12 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 
   btns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      btns.forEach((b) => b.classList.remove('active'));
+      btns.forEach((b) => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
       const tag = btn.dataset.tag;
       if (!tag) return;
       items.forEach((item) => {

@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 const { tag } = Astro.params;
 const { posts } = Astro.props;
 ---
-<BaseLayout title={`标签：${tag} | 弈川`}>
+<BaseLayout title={`标签：${tag} | 弈川`} description={`标签「${tag}」下的文章`}>
     <section class="list">
         <h1>标签：{tag}</h1>
         {posts.map((post) => (
