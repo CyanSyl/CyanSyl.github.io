@@ -13,4 +13,12 @@ const blog = defineCollection({
     }),
 });
 
-export const collections = { blog };
+// 想法流：不要标题，一段话 + 日期即可
+const notes = defineCollection({
+    loader: glob({ pattern: '**/*.md', base: './src/content/notes' }),
+    schema: z.object({
+        date: z.coerce.date(),
+    }),
+});
+
+export const collections = { blog, notes };

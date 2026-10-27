@@ -1,0 +1,64 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const notes = (await getCollection('notes'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// 预渲染每条想法的 Markdown 正文
+const rendered = await Promise.all(
+  notes.map(async (note) => ({
+    note,
+    Content: (await render(note)).Content,
+  }))
+);
+
+const formatDay = (date: Date) =>
+  new Intl.DateTimeFormat('zh-CN', {
+    timeZone: 'UTC',
+    year: 'numeric', month: 'long', day: 'numeric',
+  }).format(date);
+---
+<BaseLayout title="想法 | 弈川">
+  <section class="notes">
+    <h1>想法</h1>
+    <p class="total">零碎的、临时的、几句话的念头都丢在这里。共 {notes.length} 条</p>
+
+    <ul class="feed">
+      {rendered.map(({ note, Content }) => (
+        <li class="entry">
+          <time datetime={note.data.date.toISOString()}>{formatDay(note.data.date)}</time>
+          <div class="body"><Content /></div>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .notes { max-width: var(--max-width); margin: 0 auto; padding: 2rem 1rem; }
+  .total { color: var(--color-muted); margin: 0.5rem 0 2rem; font-size: 0.9rem; }
+
+  .feed {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 1.25rem;
+    border-left: 2px solid var(--color-border);
+  }
+  .feed .entry { position: relative; padding-bottom: 1.75rem; }
+  .feed .entry:last-child { padding-bottom: 0; }
+  .feed .entry::before {
+    content: '';
+    position: absolute;
+    left: calc(-1.25rem - 5px);
+    top: 0.55rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    opacity: 0.7;
+  }
+  time { color: var(--color-muted); font-size: 0.85rem; }
+  .body { margin-top: 0.25rem; }
+  .body :global(p) { margin: 0.3rem 0; }
+</style>
