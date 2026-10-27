@@ -22,6 +22,6 @@ export const projects: Project[] = [
         techStack: ["Go"],
         url: "https://github.com/PengZX1945/Backendjh",
         featured: false,
-        updatedAt: "2026-10-28", // TODO: 改成实际的最后更新时间
+        updatedAt: "2026-10-7", 
     },
 ];
