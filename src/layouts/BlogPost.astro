@@ -16,7 +16,7 @@ interface Props {
 const { title, date, tags, headings, prev, next, wordCount, readingTime } = Astro.props;
 
 const formatted = date.toLocaleDateString('zh-CN', {
-    year: 'numeric', month: 'long', day: 'numeric',
+    year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
 });
 // 目录只收 h2/h3，h1 是文章标题本身
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
@@ -129,8 +129,8 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
     .pager-label { display: block; font-size: 0.8rem; color: var(--color-muted); }
     .pager-title { display: block; margin-top: 0.25rem; }
 
-    .content :global(h2) { margin-top: 2.5rem; font-size: 1.4rem; }
-    .content :global(h3) { margin-top: 2rem; font-size: 1.15rem; }
+    .content :global(h2) { margin-top: 2.5rem; font-size: 1.4rem; scroll-margin-top: 5rem; }
+    .content :global(h3) { margin-top: 2rem; font-size: 1.15rem; scroll-margin-top: 5rem; }
     .content :global(p) { margin: 1rem 0; }
     .content :global(ul), .content :global(ol) { margin: 1rem 0; padding-left: 1.5rem; }
     .content :global(a) { text-decoration: underline; }
@@ -165,6 +165,10 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
         transition: opacity 0.2s, color 0.2s, border-color 0.2s;
     }
     .content :global(pre:hover .copy-btn) { opacity: 1; }
+    /* 触屏设备没有 hover，复制按钮常显 */
+    @media (hover: none) {
+        .content :global(.copy-btn) { opacity: 1; }
+    }
     .content :global(.copy-btn:hover) { color: var(--color-text); border-color: var(--color-accent); }
     .content :global(blockquote) {
         border-left: 3px solid var(--color-accent);

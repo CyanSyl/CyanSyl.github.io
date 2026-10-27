@@ -6,7 +6,7 @@ interface Props {
   description: string;
 }
 const { url, title, date, description } = Astro.props;
-const formatted = date.toLocaleDateString('zh-CN');
+const formatted = date.toLocaleDateString('zh-CN', { timeZone: 'UTC' });
 ---
 <a href={url} class="card">
   <h3>{title}</h3>
