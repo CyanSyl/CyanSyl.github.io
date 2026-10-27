@@ -16,7 +16,7 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
 const formatDay = (date: Date) =>
   `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 ---
-<BaseLayout title="归档 | 我的博客">
+<BaseLayout title="归档 | 弈川">
   <section class="archive">
     <h1>归档</h1>
     <p class="total">共 {posts.length} 篇文章</p>
