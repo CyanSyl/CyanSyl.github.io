@@ -30,10 +30,10 @@ const formatDay = (date: Date) =>
           <time datetime={note.data.date.toISOString()}>{formatDay(note.data.date)}</time>
           {note.data.type === 'dig' && <span class="badge dig">挖坑</span>}
           {note.data.type === 'fill' && <span class="badge fill">填坑</span>}
-          <div class="body"><Content /></div>
           {note.data.type === 'fill' && note.data.link && (
-            <a class="fill-link" href={note.data.link}>→ 看文章</a>
+            <a class="fill-link" href={note.data.link}>看文章 →</a>
           )}
+          <div class="body"><Content /></div>
         </li>
       ))}
     </ul>
@@ -74,7 +74,7 @@ const formatDay = (date: Date) =>
   }
   .badge.dig { color: var(--color-accent); border-color: var(--color-accent); }
   .badge.fill { color: #8fce9d; border-color: #8fce9d; }
-  .fill-link { font-size: 0.85rem; }
+  .fill-link { font-size: 0.85rem; margin-left: 0.5rem; }
   .body { margin-top: 0.25rem; }
   .body :global(p) { margin: 0.3rem 0; }
 </style>
