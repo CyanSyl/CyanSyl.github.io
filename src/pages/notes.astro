@@ -2,8 +2,13 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+// 同日内的次序：挖坑 → 普通想法 → 填坑（时间线从上往下读是"先挖后填"）
+const typeOrder = { dig: 0, note: 1, fill: 2 } as const;
 const notes = (await getCollection('notes'))
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  .sort((a, b) =>
+    b.data.date.getTime() - a.data.date.getTime() ||
+    typeOrder[a.data.type] - typeOrder[b.data.type]
+  );
 
 // 填坑笔记用 dig 字段指向挖坑笔记的文件名，据此构建"已填坑"集合
 const filledDigs = new Set(
