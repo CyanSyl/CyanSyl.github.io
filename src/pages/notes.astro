@@ -5,6 +5,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const notes = (await getCollection('notes'))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
+// 填坑笔记用 dig 字段指向挖坑笔记的文件名，据此构建"已填坑"集合
+const filledDigs = new Set(
+  notes.filter((n) => n.data.type === 'fill' && n.data.dig).map((n) => n.data.dig)
+);
+const digs = notes.filter((n) => n.data.type === 'dig');
+const filledCount = digs.filter((n) => filledDigs.has(n.id)).length;
+
 // 预渲染每条想法的 Markdown 正文
 const rendered = await Promise.all(
   notes.map(async (note) => ({
@@ -22,13 +29,22 @@ const formatDay = (date: Date) =>
 <BaseLayout title="想法 | 弈川" description="零碎想法与临时念头">
   <section class="notes">
     <h1>想法</h1>
-    <p class="total">零碎的、临时的、几句话的念头都丢在这里。共 {notes.length} 条</p>
+    <p class="total">
+      零碎的、临时的、几句话的念头都丢在这里。共 {notes.length} 条
+      {digs.length > 0 && (
+        <span> · 挖坑 {digs.length} · 已填 {filledCount} · 待填 {digs.length - filledCount}</span>
+      )}
+    </p>
 
     <ul class="feed">
       {rendered.map(({ note, Content }) => (
         <li class="entry">
           <time datetime={note.data.date.toISOString()}>{formatDay(note.data.date)}</time>
-          {note.data.type === 'dig' && <span class="badge dig">挖坑</span>}
+          {note.data.type === 'dig' && (
+            filledDigs.has(note.id)
+              ? <span class="badge filled">已填</span>
+              : <span class="badge dig">待填</span>
+          )}
           {note.data.type === 'fill' && <span class="badge fill">填坑</span>}
           {note.data.tags.map((tag) => <span class="note-tag">#{tag}</span>)}
           <div class="body"><Content /></div>
@@ -75,6 +91,7 @@ const formatDay = (date: Date) =>
   }
   .badge.dig { color: var(--color-accent); border-color: var(--color-accent); }
   .badge.fill { color: #8fce9d; border-color: #8fce9d; }
+  .badge.filled { color: #8fce9d; border-color: #8fce9d; }
   .fill-link { font-size: 0.85rem; }
   .note-tag {
     font-size: 0.78rem;
