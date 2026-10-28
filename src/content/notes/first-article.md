@@ -1,7 +1,6 @@
 ---
 date: 2026-10-27
-type: fill
-link: /blog/why-this-blog
+type: dig
 tags:
   - 建站
 ---
