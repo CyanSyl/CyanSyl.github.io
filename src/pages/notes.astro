@@ -2,12 +2,12 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// 时间正序（最早的在最上面，从上往下读）；同日内：挖坑 → 普通想法 → 填坑
+// 倒序（最新在最上面）；同日内也按"晚发生的在上"：填坑 → 普通想法 → 挖坑
 const typeOrder = { dig: 0, note: 1, fill: 2 } as const;
 const notes = (await getCollection('notes'))
   .sort((a, b) =>
-    a.data.date.getTime() - b.data.date.getTime() ||
-    typeOrder[a.data.type] - typeOrder[b.data.type]
+    b.data.date.getTime() - a.data.date.getTime() ||
+    typeOrder[b.data.type] - typeOrder[a.data.type]
   );
 
 // 填坑笔记用 dig 字段指向挖坑笔记的文件名，据此构建"已填坑"集合
