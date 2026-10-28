@@ -25,11 +25,18 @@ const rendered = await Promise.all(
   }))
 );
 
-const formatDay = (date: Date) =>
-  new Intl.DateTimeFormat('zh-CN', {
+// date 可写 2026-10-27 或 2026-10-27T14:30；写了时间才显示时分（午夜视为"没写时间"）
+const formatDay = (date: Date) => {
+  const day = new Intl.DateTimeFormat('zh-CN', {
     timeZone: 'UTC',
     year: 'numeric', month: 'long', day: 'numeric',
   }).format(date);
+  const minutes = date.getUTCHours() * 60 + date.getUTCMinutes();
+  if (minutes === 0) return day;
+  const hh = String(date.getUTCHours()).padStart(2, '0');
+  const mm = String(date.getUTCMinutes()).padStart(2, '0');
+  return `${day} ${hh}:${mm}`;
+};
 ---
 <BaseLayout title="想法 | 弈川" description="零碎想法与临时念头">
   <section class="notes">

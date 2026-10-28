@@ -16,6 +16,7 @@ const blog = defineCollection({
 // 想法流：不要标题，一段话 + 日期即可
 // type: dig = 挖坑（待写选题），fill = 填坑（写完了，link 指向文章），不写 = 普通想法
 // fill 的 dig 字段指向对应挖坑笔记的文件名（不带 .md），用于自动配对统计
+// date 可带时间（2026-10-27T14:30），同一天多条想法时用于排出真实先后
 const notes = defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/notes' }),
     schema: z.object({

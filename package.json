@@ -6,9 +6,9 @@
     "node": ">=22.22.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro check && astro build && pagefind --site dist",
-    "preview": "astro preview",
+    "dev": "TZ=UTC astro dev",
+    "build": "TZ=UTC astro check && TZ=UTC astro build && pagefind --site dist",
+    "preview": "TZ=UTC astro preview",
     "astro": "astro"
   },
   "dependencies": {
