@@ -2,11 +2,11 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// 同日内的次序：挖坑 → 普通想法 → 填坑（时间线从上往下读是"先挖后填"）
+// 时间正序（最早的在最上面，从上往下读）；同日内：挖坑 → 普通想法 → 填坑
 const typeOrder = { dig: 0, note: 1, fill: 2 } as const;
 const notes = (await getCollection('notes'))
   .sort((a, b) =>
-    b.data.date.getTime() - a.data.date.getTime() ||
+    a.data.date.getTime() - b.data.date.getTime() ||
     typeOrder[a.data.type] - typeOrder[b.data.type]
   );
 
