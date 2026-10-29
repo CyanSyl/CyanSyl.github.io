@@ -25,7 +25,8 @@ frontmatter 必须遵守 schema（src/content.config.ts）：
 ```yaml
 ---
 title: 标题
-date: 2026-10-29        #  UTC 墙钟日期，写几号就是几号
+date: 2026-10-29        # 发布日期，UTC 墙钟日期，定稿后不要改（列表/归档按它排序）
+updated: 2026-11-05     # 可省略；内容有实质更新时填当天日期，文章页会显示"更新于"
 tags: [标签1, 标签2]     # 可省略，默认 []
 description: 一句话摘要   # 可省略；会用于 SEO 和文章列表，建议写
 draft: false            # true 则不发布（不进列表/搜索）
@@ -34,6 +35,7 @@ draft: false            # true 则不发布（不进列表/搜索）
 
 - 文件名用 kebab-case 英文（如 `astro-content-collections.md`），它就是 URL：`/blog/astro-content-collections`
 - 正文用标准 Markdown，代码块标注语言（```js、```python）
+- 修改旧文章时：小改（错别字、格式）不动 frontmatter；内容有实质增删时加/更新 `updated` 字段为当天日期
 
 ## 想法规范（src/content/notes/*.md）
 

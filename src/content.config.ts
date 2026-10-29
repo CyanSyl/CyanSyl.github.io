@@ -7,6 +7,7 @@ const blog = defineCollection({
     schema: z.object({
         title: z.string(),
         date: z.coerce.date(),
+        updated: z.coerce.date().optional(), // 内容有实质更新时填当天日期；小改（错别字）不用填
         tags: z.array(z.string()).default([]),
         description: z.string().default(''),
         draft: z.boolean().default(false),

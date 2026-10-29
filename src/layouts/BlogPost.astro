@@ -6,6 +6,7 @@ import type { CollectionEntry } from 'astro:content';
 interface Props {
     title: string;
     date: Date;
+    updated?: Date;
     tags: string[];
     headings: MarkdownHeading[];
     prev: CollectionEntry<'blog'> | null;
@@ -14,11 +15,13 @@ interface Props {
     readingTime: number;
     description?: string;
 }
-const { title, date, tags, headings, prev, next, wordCount, readingTime, description } = Astro.props;
+const { title, date, updated, tags, headings, prev, next, wordCount, readingTime, description } = Astro.props;
 
-const formatted = date.toLocaleDateString('zh-CN', {
+const formatDay = (d: Date) => d.toLocaleDateString('zh-CN', {
     year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
 });
+const formatted = formatDay(date);
+const formattedUpdated = updated ? formatDay(updated) : null;
 // 目录只收 h2/h3，h1 是文章标题本身
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
@@ -28,6 +31,9 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
             <h1>{title}</h1>
             <p class="meta">
                 <time datetime={date.toISOString()}>{formatted}</time>
+                {formattedUpdated && updated && (
+                    <span class="updated">（更新于 <time datetime={updated.toISOString()}>{formattedUpdated}</time>）</span>
+                )}
                 <span class="sep">·</span>
                 <span>全文 {wordCount} 字</span>
                 <span class="sep">·</span>
